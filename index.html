@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Certificate Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+    .box {
+      max-width: 600px;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0066cc;
+    }
+    .valid {
+      color: green;
+      font-weight: bold;
+    }
+    .invalid {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h1>Certificate Verification</h1>
+  <p id="message">Checking certificate…</p>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const certId = params.get("cert");
+
+  if (!certId) {
+    document.getElementById("message").innerHTML =
+      "<span class='invalid'>No certificate ID provided.</span>";
+  } else {
+    document.getElementById("message").innerText =
+      "Certificate ID received: " + certId +
+      ". Verification will be connected next.";
+  }
+</script>
+
+</body>
+</html>
