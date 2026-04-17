@@ -28,11 +28,9 @@
       margin-bottom: 20px;
     }
 
-    .language-switch span {
-      margin-left: 10px;
-      font-weight: bold;
-      color: #005ea5;
-      cursor: default;
+    .language-switch button {
+      margin-left: 5px;
+      cursor: pointer;
     }
 
     h1 {
@@ -44,6 +42,10 @@
     h2 {
       font-size: 20px;
       margin-top: 30px;
+    }
+
+    h3 {
+      margin-top: 0;
     }
 
     p {
@@ -131,18 +133,12 @@
 <body>
 
 <div class="container">
-  <div style="text-align: right; font-size: 14px; margin-bottom: 20px;">
-  Language:
-  <button onclick="setLanguage('en')">EN</button>
-  <button onclick="setLanguage('fr')">FR</button>
-  <button onclick="setLanguage('es')">ES</button>
-</div>
 
   <div class="language-switch">
     Language:
-    <span>EN</span>
-    <span>FR</span>
-    <span>ES</span>
+    <button onclick="setLanguage('en')">EN</button>
+    <button onclick="setLanguage('fr')">FR</button>
+    <button onclick="setLanguage('es')">ES</button>
   </div>
 
   <h1>Certificate Verification</h1>
@@ -161,7 +157,9 @@
 
   <ul>
     <li>Locate the <strong>Certificate ID</strong> printed on the certificate.</li>
-    <li>Send the Certificate ID to: <strong>aristeidis.tsakiris@un.org</strong></li>
+    <li>Send the Certificate ID to:
+      <strong>aristeidis.tsakiris@un.org</strong>
+    </li>
   </ul>
 
   <div class="coming-soon">
@@ -170,7 +168,7 @@
     <button disabled>Verify</button>
   </div>
 
-  <!-- VERIFICATION RESULT -->
+  <!-- Verification result area -->
   <div id="verification-result">
     <p>Verifying certificate…</p>
   </div>
@@ -212,8 +210,6 @@
 </div>
 
 <script>
-
-  // Language translations (labels only)
   const translations = {
     en: {
       valid: "✅ Certificate Valid",
@@ -250,14 +246,13 @@
     }
   };
 
-  // Default language
   let lang = "en";
+
   function setLanguage(selectedLang) {
-  lang = selectedLang;
-  verifyCertificate();
+    lang = selectedLang;
+    verifyCertificate();
   }
 
-  async function verifyCertificate() {
   async function verifyCertificate() {
     const params = new URLSearchParams(window.location.search);
     const certId = params.get("cert");
@@ -272,7 +267,6 @@
 
     try {
       const response = await fetch(filePath);
-
       if (!response.ok) {
         showNotFound();
         return;
@@ -283,18 +277,25 @@
       if (record.status === "Valid") {
         resultDiv.innerHTML = `
           <div class="result valid">
-            <h3>✅ Certificate Valid</h3>
-            <p><strong>Name:</strong> ${record.firstName} ${record.lastName}</p>
-            <p><strong>Webinar:</strong> ${record.webinarTitle}</p>
-            <p><strong>Webinar date:</strong> ${record.webinarDate}</p>
-            <p><strong>Date of issue:</strong> ${record.dateIssued}</p>
-            <p><strong>Certificate ID:</strong> ${record.certificateId}</p>
+            <h3>${translations[lang].valid}</h3>
+            <p><strong>${translations[lang].name}:</strong> ${record.firstName} ${record.lastName}</p>
+            <p><strong>${translations[lang].webinar}:</strong> ${record.webinarTitle}</p>
+            <p><strong>${translations[lang].webinarDate}:</strong> ${record.webinarDate}</p>
+            <p><strong>${translations[lang].dateIssued}:</strong> ${record.dateIssued}</p>
+            <p><strong>${translations[lang].certificateId}:</strong> ${record.certificateId}</p>
+          </div>`;
+      } else if (record.status === "Revoked") {
+        resultDiv.innerHTML = `
+          <div class="result not-found">
+            <h3>${translations[lang].revoked}</h3>
+            <p>${translations[lang].contact}
+            <strong>aristeidis.tsakiris@un.org</strong></p>
           </div>`;
       } else {
         showNotFound();
       }
 
-    } catch (error) {
+    } catch (e) {
       showNotFound();
     }
   }
@@ -302,14 +303,13 @@
   function showNotFound() {
     document.getElementById("verification-result").innerHTML = `
       <div class="result not-found">
-        <h3>❌ Certificate Not Found</h3>
-        <p>This Certificate ID does not appear in the public verification registry.</p>
-        <p>If the certificate was issued recently, it may not yet be published.</p>
-        <p>Please contact <strong>aristeidis.tsakiris@un.org</strong> for assistance.</p>
+        <h3>${translations[lang].notFound}</h3>
+        <p>${translations[lang].contact}
+        <strong>aristeidis.tsakiris@un.org</strong></p>
       </div>`;
   }
 
-  verifyCertificate();
+  document.addEventListener("DOMContentLoaded", verifyCertificate);
 </script>
 
 </body>
