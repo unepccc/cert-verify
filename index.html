@@ -24,8 +24,8 @@
 
     .language-switch {
       text-align: right;
-      font-size: 14px;
       margin-bottom: 20px;
+      font-size: 14px;
     }
 
     .language-switch button {
@@ -40,17 +40,12 @@
     }
 
     h2 {
-      font-size: 20px;
-      margin-top: 30px;
-    }
-
-    h3 {
-      margin-top: 0;
+      margin-top: 35px;
     }
 
     p {
       line-height: 1.6;
-      color: #333333;
+      color: #333;
     }
 
     ul {
@@ -66,24 +61,14 @@
 
     .coming-soon {
       background: #f9f9f9;
-      border: 1px dashed #cccccc;
+      border: 1px dashed #ccc;
       padding: 20px;
-      margin: 25px 0;
-    }
-
-    .coming-soon input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 15px;
+      margin-top: 20px;
     }
 
     .coming-soon button {
       margin-top: 10px;
-      padding: 10px 18px;
-      background-color: #cccccc;
-      border: none;
-      color: #666666;
+      padding: 8px 14px;
       cursor: not-allowed;
     }
 
@@ -108,30 +93,21 @@
     }
 
     .print-note {
-      background: #fafafa;
-      padding: 20px;
-      border: 1px solid #dddddd;
       margin-top: 30px;
-    }
-
-    .print-note button {
-      background-color: #005ea5;
-      color: #ffffff;
-      border: none;
-      padding: 10px 16px;
-      cursor: pointer;
+      border: 1px solid #ddd;
+      padding: 20px;
+      background: #fafafa;
     }
 
     .footer {
       margin-top: 40px;
       font-size: 12px;
-      color: #666666;
+      color: #666;
     }
   </style>
 </head>
 
 <body>
-
 <div class="container">
 
   <div class="language-switch">
@@ -157,18 +133,15 @@
 
   <ul>
     <li>Locate the <strong>Certificate ID</strong> printed on the certificate.</li>
-    <li>Send the Certificate ID to:
-      <strong>aristeidis.tsakiris@un.org</strong>
-    </li>
+    <li>Send the Certificate ID to <strong>aristeidis.tsakiris@un.org</strong>.</li>
   </ul>
 
   <div class="coming-soon">
     <strong>Online verification (coming soon)</strong><br>
-    <input type="text" placeholder="Enter Certificate ID" disabled>
     <button disabled>Verify</button>
   </div>
 
-  <!-- Verification result area -->
+  <!-- VERIFICATION RESULT -->
   <div id="verification-result">
     <p>Verifying certificate…</p>
   </div>
@@ -189,8 +162,7 @@
 
   <div class="faq-item">
     <strong>Will I need a new certificate later?</strong><br>
-    No. Certificates already issued will become verifiable online using the same
-    Certificate ID.
+    No. Certificates already issued will become verifiable online using the same Certificate ID.
   </div>
 
   <div class="print-note">
@@ -200,7 +172,6 @@
       Authenticity can be verified using the Certificate ID shown on the document.
       For verification, contact: aristeidis.tsakiris@un.org
     </p>
-    <button onclick="window.print()">Print Verification Note</button>
   </div>
 
   <div class="footer">
@@ -218,8 +189,7 @@
       webinar: "Webinar",
       webinarDate: "Webinar date",
       dateIssued: "Date of issue",
-      certificateId: "Certificate ID",
-      contact: "For assistance, please contact"
+      certificateId: "Certificate ID"
     },
     fr: {
       valid: "✅ Certificat valide",
@@ -228,8 +198,7 @@
       webinar: "Webinaire",
       webinarDate: "Date du webinaire",
       dateIssued: "Date de délivrance",
-      certificateId: "Identifiant du certificat",
-      contact: "Pour assistance, veuillez contacter"
+      certificateId: "Identifiant du certificat"
     },
     es: {
       valid: "✅ Certificado válido",
@@ -238,56 +207,48 @@
       webinar: "Seminario web",
       webinarDate: "Fecha del seminario",
       dateIssued: "Fecha de emisión",
-      certificateId: "ID del certificado",
-      contact: "Para asistencia, póngase en contacto con"
+      certificateId: "ID del certificado"
     }
   };
 
   let lang = "en";
 
-  function setLanguage(selectedLang) {
-    lang = selectedLang;
+  function setLanguage(l) {
+    lang = l;
     verifyCertificate();
   }
 
   async function verifyCertificate() {
     const params = new URLSearchParams(window.location.search);
     const certId = params.get("cert");
-    const resultDiv = document.getElementById("verification-result");
+    const result = document.getElementById("verification-result");
 
     if (!certId) {
-      resultDiv.innerHTML = "<p>Please provide a Certificate ID.</p>";
+      result.innerHTML = "<p>Please provide a Certificate ID.</p>";
       return;
     }
 
-    const filePath = `certificates/${certId}.json`;
-
     try {
-      const response = await fetch(filePath);
-      if (!response.ok) {
-        showNotFound();
-        return;
-      }
+      const response = await fetch(`certificates/${certId}.json`);
+      if (!response.ok) throw new Error("Not found");
 
-      const record = await response.json();
-  resultDiv.innerHTML = `
-  <div class="result valid">
-    <h3>${translations[lang].valid}</h3>
-    <p><strong>${translations[lang].name}:</strong> ${record.firstName} ${record.lastName}</p>
-    <p><strong>${translations[lang].webinar}:</strong> ${record.webinarTitle}</p>
-    <p><strong>${translations[lang].webinarDate}:</strong> ${record.webinarDate}</p>
-    <p><strong>${translations[lang].dateIssued}:</strong> ${record.dateIssued}</p>
-    <p><strong>${translations[lang].certificateId}:</strong> ${record.certificateId}</p>
-  </div>`;   
-  }
-
-  function showNotFound() {
-    document.getElementById("verification-result").innerHTML = `
-      <div class="result not-found">
-        <h3>${translations[lang].notFound}</h3>
-        <p>${translations[lang].contact}
-        <strong>aristeidis.tsakiris@un.org</strong></p>
-      </div>`;
+      const r = await response.json();
+      result.innerHTML = `
+        <div class="result valid">
+          <h3>${translations[lang].valid}</h3>
+          <p><strong>${translations[lang].name}:</strong> ${r.firstName} ${r.lastName}</p>
+          <p><strong>${translations[lang].webinar}:</strong> ${r.webinarTitle}</p>
+          <p><strong>${translations[lang].webinarDate}:</strong> ${r.webinarDate}</p>
+          <p><strong>${translations[lang].dateIssued}:</strong> ${r.dateIssued}</p>
+          <p><strong>${translations[lang].certificateId}:</strong> ${r.certificateId}</p>
+        </div>`;
+    } catch {
+      result.innerHTML = `
+        <div class="result not-found">
+          <h3>${translations[lang].notFound}</h3>
+          <p>Please contact <strong>aristeidis.tsakiris@un.org</strong>.</p>
+        </div>`;
+    }
   }
 
   document.addEventListener("DOMContentLoaded", verifyCertificate);
