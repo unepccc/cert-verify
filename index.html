@@ -213,7 +213,6 @@
   const translations = {
     en: {
       valid: "✅ Certificate Valid",
-      revoked: "⚠️ Certificate Revoked",
       notFound: "❌ Certificate Not Found",
       name: "Name",
       webinar: "Webinar",
@@ -224,7 +223,6 @@
     },
     fr: {
       valid: "✅ Certificat valide",
-      revoked: "⚠️ Certificat révoqué",
       notFound: "❌ Certificat introuvable",
       name: "Nom",
       webinar: "Webinaire",
@@ -235,7 +233,6 @@
     },
     es: {
       valid: "✅ Certificado válido",
-      revoked: "⚠️ Certificado revocado",
       notFound: "❌ Certificado no encontrado",
       name: "Nombre",
       webinar: "Seminario web",
@@ -273,31 +270,15 @@
       }
 
       const record = await response.json();
-
-      if (record.status === "Valid") {
-        resultDiv.innerHTML = `
-          <div class="result valid">
-            <h3>${translations[lang].valid}</h3>
-            <p><strong>${translations[lang].name}:</strong> ${record.firstName} ${record.lastName}</p>
-            <p><strong>${translations[lang].webinar}:</strong> ${record.webinarTitle}</p>
-            <p><strong>${translations[lang].webinarDate}:</strong> ${record.webinarDate}</p>
-            <p><strong>${translations[lang].dateIssued}:</strong> ${record.dateIssued}</p>
-            <p><strong>${translations[lang].certificateId}:</strong> ${record.certificateId}</p>
-          </div>`;
-      } else if (record.status === "Revoked") {
-        resultDiv.innerHTML = `
-          <div class="result not-found">
-            <h3>${translations[lang].revoked}</h3>
-            <p>${translations[lang].contact}
-            <strong>aristeidis.tsakiris@un.org</strong></p>
-          </div>`;
-      } else {
-        showNotFound();
-      }
-
-    } catch (e) {
-      showNotFound();
-    }
+  resultDiv.innerHTML = `
+  <div class="result valid">
+    <h3>${translations[lang].valid}</h3>
+    <p><strong>${translations[lang].name}:</strong> ${record.firstName} ${record.lastName}</p>
+    <p><strong>${translations[lang].webinar}:</strong> ${record.webinarTitle}</p>
+    <p><strong>${translations[lang].webinarDate}:</strong> ${record.webinarDate}</p>
+    <p><strong>${translations[lang].dateIssued}:</strong> ${record.dateIssued}</p>
+    <p><strong>${translations[lang].certificateId}:</strong> ${record.certificateId}</p>
+  </div>`;   
   }
 
   function showNotFound() {
