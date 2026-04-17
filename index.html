@@ -206,6 +206,48 @@
 </div>
 
 <script>
+
+  // Language translations (labels only)
+  const translations = {
+    en: {
+      valid: "✅ Certificate Valid",
+      revoked: "⚠️ Certificate Revoked",
+      notFound: "❌ Certificate Not Found",
+      name: "Name",
+      webinar: "Webinar",
+      webinarDate: "Webinar date",
+      dateIssued: "Date of issue",
+      certificateId: "Certificate ID",
+      contact: "For assistance, please contact"
+    },
+    fr: {
+      valid: "✅ Certificat valide",
+      revoked: "⚠️ Certificat révoqué",
+      notFound: "❌ Certificat introuvable",
+      name: "Nom",
+      webinar: "Webinaire",
+      webinarDate: "Date du webinaire",
+      dateIssued: "Date de délivrance",
+      certificateId: "Identifiant du certificat",
+      contact: "Pour assistance, veuillez contacter"
+    },
+    es: {
+      valid: "✅ Certificado válido",
+      revoked: "⚠️ Certificado revocado",
+      notFound: "❌ Certificado no encontrado",
+      name: "Nombre",
+      webinar: "Seminario web",
+      webinarDate: "Fecha del seminario",
+      dateIssued: "Fecha de emisión",
+      certificateId: "ID del certificado",
+      contact: "Para asistencia, póngase en contacto con"
+    }
+  };
+
+  // Default language
+  let lang = "en";
+
+  async function verifyCertificate() {
   async function verifyCertificate() {
     const params = new URLSearchParams(window.location.search);
     const certId = params.get("cert");
