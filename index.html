@@ -216,35 +216,45 @@
       return;
     }
 
+    const filePath = `certificates/${certId}.json`;
+
     try {
-      const response = await fetch("certificates.json");
-      const certificates = await response.json();
+      const response = await fetch(filePath);
 
-      const record = certificates.find(
-        c => c.certificateId === certId && c.status === "Valid"
-      );
+      if (!response.ok) {
+        showNotFound();
+        return;
+      }
 
-      if (record) {
+      const record = await response.json();
+
+      if (record.status === "Valid") {
         resultDiv.innerHTML = `
           <div class="result valid">
             <h3>✅ Certificate Valid</h3>
             <p><strong>Name:</strong> ${record.firstName} ${record.lastName}</p>
             <p><strong>Webinar:</strong> ${record.webinarTitle}</p>
             <p><strong>Webinar date:</strong> ${record.webinarDate}</p>
-            <p><strong>Certificate ID:</strong> ${record.certificateId}</p>
             <p><strong>Date of issue:</strong> ${record.dateIssued}</p>
+            <p><strong>Certificate ID:</strong> ${record.certificateId}</p>
           </div>`;
       } else {
-        resultDiv.innerHTML = `
-          <div class="result not-found">
-            <h3>❌ Certificate Not Found</h3>
-            <p>This Certificate ID does not appear in the public verification registry.</p>
-            <p>Please contact <strong>aristeidis.tsakiris@un.org</strong> for assistance.</p>
-          </div>`;
+        showNotFound();
       }
+
     } catch (error) {
-      resultDiv.innerHTML = "<p>Verification service unavailable.</p>";
+      showNotFound();
     }
+  }
+
+  function showNotFound() {
+    document.getElementById("verification-result").innerHTML = `
+      <div class="result not-found">
+        <h3>❌ Certificate Not Found</h3>
+        <p>This Certificate ID does not appear in the public verification registry.</p>
+        <p>If the certificate was issued recently, it may not yet be published.</p>
+        <p>Please contact <strong>aristeidis.tsakiris@un.org</strong> for assistance.</p>
+      </div>`;
   }
 
   verifyCertificate();
