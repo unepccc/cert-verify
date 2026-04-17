@@ -131,6 +131,12 @@
 <body>
 
 <div class="container">
+  <div style="text-align: right; font-size: 14px; margin-bottom: 20px;">
+  Language:
+  <button onclick="setLanguage('en')">EN</button>
+  <button onclick="setLanguage('fr')">FR</button>
+  <button onclick="setLanguage('es')">ES</button>
+</div>
 
   <div class="language-switch">
     Language:
@@ -246,6 +252,10 @@
 
   // Default language
   let lang = "en";
+  function setLanguage(selectedLang) {
+  lang = selectedLang;
+  verifyCertificate();
+  }
 
   async function verifyCertificate() {
   async function verifyCertificate() {
