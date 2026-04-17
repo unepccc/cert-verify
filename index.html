@@ -22,22 +22,23 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
+    .language-switch {
+      text-align: right;
+      font-size: 14px;
       margin-bottom: 20px;
     }
 
-    .logo {
-      width: 90px;
-      height: auto;
+    .language-switch span {
+      margin-left: 10px;
+      font-weight: bold;
+      color: #005ea5;
+      cursor: default;
     }
 
     h1 {
       color: #005ea5;
       font-size: 26px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     h2 {
@@ -48,6 +49,10 @@
     p {
       line-height: 1.6;
       color: #333333;
+    }
+
+    ul {
+      margin-left: 20px;
     }
 
     .highlight {
@@ -64,14 +69,14 @@
       margin: 25px 0;
     }
 
-    input[type="text"] {
+    .coming-soon input {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
       font-size: 15px;
     }
 
-    button {
+    .coming-soon button {
       margin-top: 10px;
       padding: 10px 18px;
       background-color: #cccccc;
@@ -80,17 +85,24 @@
       cursor: not-allowed;
     }
 
-    ol {
-      padding-left: 20px;
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 6px;
+    }
+
+    .valid {
+      background-color: #e7f6e7;
+      border-left: 5px solid #2e8b57;
+    }
+
+    .not-found {
+      background-color: #fdecea;
+      border-left: 5px solid #d93025;
     }
 
     .faq-item {
       margin-top: 15px;
-    }
-
-    .faq-item strong {
-      display: block;
-      margin-bottom: 5px;
     }
 
     .print-note {
@@ -103,21 +115,9 @@
     .print-note button {
       background-color: #005ea5;
       color: #ffffff;
-      cursor: pointer;
-    }
-
-    .language-switch {
-      text-align: right;
-      margin-bottom: 20px;
-    }
-
-    .language-switch button {
-      background: none;
       border: none;
-      color: #005ea5;
-      margin-left: 10px;
+      padding: 10px 16px;
       cursor: pointer;
-      font-weight: bold;
     }
 
     .footer {
@@ -134,57 +134,57 @@
 
   <div class="language-switch">
     Language:
-    <button onclick="setLang('en')">EN</button>
-    <button onclick="setLang('fr')">FR</button>
-    <button onclick="setLang('es')">ES</button>
+    <span>EN</span>
+    <span>FR</span>
+    <span>ES</span>
   </div>
 
-  <div class="header">
-    <!-- Replace with official UNEP‑CCC logo URL if available -->
-    <img src="https://unepccc.org/wp-content/uploads/2022/02/unepccc-color.svg" 
-         alt="UNEP Copenhagen Climate Centre logo" class="logo">
-    <h1 id="title">Certificate Verification</h1>
-  </div>
+  <h1>Certificate Verification</h1>
 
-  <p id="intro">
+  <p>
     Certificates issued by the <strong>UNEP Copenhagen Climate Centre (UNEP‑CCC)</strong>
     include a unique Certificate ID that can be used to verify their authenticity.
   </p>
 
-  <div class="highlight" id="status">
+  <div class="highlight">
     Online certificate verification is currently under development.
     Certificates issued during this period remain fully valid and verifiable.
   </div>
 
-  <h2 id="how">How to Verify a Certificate</h2>
+  <h2>How to Verify a Certificate</h2>
 
-  <ol id="steps">
+  <ul>
     <li>Locate the <strong>Certificate ID</strong> printed on the certificate.</li>
     <li>Send the Certificate ID to: <strong>aristeidis.tsakiris@un.org</strong></li>
-  </ol>
+  </ul>
 
   <div class="coming-soon">
-    <strong>Online verification (coming soon)</strong>
+    <strong>Online verification (coming soon)</strong><br>
     <input type="text" placeholder="Enter Certificate ID" disabled>
     <button disabled>Verify</button>
   </div>
 
-  <h2 id="faq">Frequently Asked Questions</h2>
+  <!-- VERIFICATION RESULT -->
+  <div id="verification-result">
+    <p>Verifying certificate…</p>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
 
   <div class="faq-item">
-    <strong>Why is online verification not yet available?</strong>
+    <strong>Why is online verification not yet available?</strong><br>
     Online verification will be enabled once all technical systems are approved
     for external access in accordance with UN IT security policies.
   </div>
 
   <div class="faq-item">
-    <strong>Are certificates issued before online verification valid?</strong>
+    <strong>Are certificates issued before online verification valid?</strong><br>
     Yes. All certificates are issued from a centrally managed registry and are valid
     irrespective of when online verification becomes available.
   </div>
 
   <div class="faq-item">
-    <strong>Will I need a new certificate later?</strong>
+    <strong>Will I need a new certificate later?</strong><br>
     No. Certificates already issued will become verifiable online using the same
     Certificate ID.
   </div>
@@ -206,39 +206,48 @@
 </div>
 
 <script>
-  const translations = {
-    en: {
-      title: "Certificate Verification",
-      intro: "Certificates issued by the UNEP Copenhagen Climate Centre (UNEP‑CCC) include a unique Certificate ID that can be used to verify their authenticity.",
-      status: "Online certificate verification is currently under development. Certificates issued during this period remain fully valid and verifiable.",
-      how: "How to Verify a Certificate",
-      faq: "Frequently Asked Questions"
-    },
-    fr: {
-      title: "Vérification de certificat",
-      intro: "Les certificats délivrés par le Centre climat de Copenhague du PNUE (UNEP‑CCC) comportent un identifiant unique permettant de vérifier leur authenticité.",
-      status: "La vérification en ligne des certificats est actuellement en cours de développement.",
-      how: "Comment vérifier un certificat",
-      faq: "Foire aux questions"
-    },
-    es: {
-      title: "Verificación de certificados",
-      intro: "Los certificados emitidos por el Centro de Copenhague sobre el Clima del PNUMA (UNEP‑CCC) incluyen un identificador único para verificar su autenticidad.",
-      status: "La verificación en línea de certificados está actualmente en desarrollo.",
-      how: "Cómo verificar un certificado",
-      faq: "Preguntas frecuentes"
-    }
-  };
+  async function verifyCertificate() {
+    const params = new URLSearchParams(window.location.search);
+    const certId = params.get("cert");
+    const resultDiv = document.getElementById("verification-result");
 
-  function setLang(lang) {
-    document.getElementById("title").innerText = translations[lang].title;
-    document.getElementById("intro").innerText = translations[lang].intro;
-    document.getElementById("status").innerText = translations[lang].status;
-    document.getElementById("how").innerText = translations[lang].how;
-    document.getElementById("faq").innerText = translations[lang].faq;
+    if (!certId) {
+      resultDiv.innerHTML = "<p>Please provide a Certificate ID.</p>";
+      return;
+    }
+
+    try {
+      const response = await fetch("certificates.json");
+      const certificates = await response.json();
+
+      const record = certificates.find(
+        c => c.certificateId === certId && c.status === "Valid"
+      );
+
+      if (record) {
+        resultDiv.innerHTML = `
+          <div class="result valid">
+            <h3>✅ Certificate Valid</h3>
+            <p><strong>Name:</strong> ${record.firstName} ${record.lastName}</p>
+            <p><strong>Webinar:</strong> ${record.webinarTitle}</p>
+            <p><strong>Webinar date:</strong> ${record.webinarDate}</p>
+            <p><strong>Certificate ID:</strong> ${record.certificateId}</p>
+          </div>`;
+      } else {
+        resultDiv.innerHTML = `
+          <div class="result not-found">
+            <h3>❌ Certificate Not Found</h3>
+            <p>This Certificate ID does not appear in the public verification registry.</p>
+            <p>Please contact <strong>aristeidis.tsakiris@un.org</strong> for assistance.</p>
+          </div>`;
+      }
+    } catch (error) {
+      resultDiv.innerHTML = "<p>Verification service unavailable.</p>";
+    }
   }
+
+  verifyCertificate();
 </script>
 
 </body>
 </html>
-``
