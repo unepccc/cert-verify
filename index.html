@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    /* Global box sizing fix (prevents overflow) */
+    /* Prevent layout overflow */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -27,7 +27,6 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
 
-    /* Header: logo ABOVE title */
     header {
       display: flex;
       flex-direction: column;
@@ -66,14 +65,12 @@
       margin-bottom: 16px;
     }
 
-    /* Search box clearly inside container */
     .search-box {
       margin-top: 20px;
       padding: 16px;
       background: #f9f9f9;
       border: 1px solid #ddd;
       border-radius: 6px;
-      width: 100%;
     }
 
     .search-box label {
@@ -83,7 +80,6 @@
 
     .search-box input {
       width: 100%;
-      max-width: 100%;
       padding: 10px;
       font-size: 16px;
       margin-top: 8px;
@@ -112,17 +108,44 @@
       border-left: 5px solid #d93025;
     }
 
+    .print-actions {
+      margin-top: 12px;
+    }
+
     footer {
       margin-top: 40px;
       font-size: 12px;
       color: #666;
     }
 
+    /* Subtle success animation */
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-success {
+      animation: fadeSlideIn 0.3s ease-out;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-success {
+        animation: none;
+      }
+    }
+
     /* Print view */
     @media print {
       .language-switch,
       .search-box,
-      .print-hide {
+      .print-hide,
+      .print-actions {
         display: none;
       }
       body {
@@ -191,6 +214,7 @@
       webinarDate: "Webinar date",
       dateIssued: "Date of issue",
       certificateId: "Certificate ID",
+      print: "Print version",
       contact: "Please contact"
     },
     fr: {
@@ -206,6 +230,7 @@
       webinarDate: "Date du webinaire",
       dateIssued: "Date de délivrance",
       certificateId: "Identifiant du certificat",
+      print: "Version imprimable",
       contact: "Veuillez contacter"
     },
     es: {
@@ -221,6 +246,7 @@
       webinarDate: "Fecha del seminario",
       dateIssued: "Fecha de emisión",
       certificateId: "ID del certificado",
+      print: "Versión para imprimir",
       contact: "Por favor contacte a"
     },
     zh: {
@@ -236,11 +262,13 @@
       webinarDate: "研讨会日期",
       dateIssued: "签发日期",
       certificateId: "证书编号",
+      print: "打印版本",
       contact: "请联系"
     }
   };
 
   let lang = "en";
+  let lastCert = null;
 
   function applyTranslations() {
     const t = translations[lang];
@@ -254,12 +282,7 @@
   function setLanguage(l) {
     lang = l;
     applyTranslations();
-    const cert = getCertFromURL();
-    if (cert) verifyCertificate(cert);
-  }
-
-  function getCertFromURL() {
-    return new URLSearchParams(window.location.search).get("cert");
+    if (lastCert) verifyCertificate(lastCert);
   }
 
   function manualVerify() {
@@ -270,6 +293,9 @@
   async function verifyCertificate(certId) {
     const t = translations[lang];
     const result = document.getElementById("verification-result");
+    lastCert = certId;
+
+    result.innerHTML = "";
 
     try {
       const response = await fetch(`certificates/${certId}.json`);
@@ -277,13 +303,16 @@
 
       const r = await response.json();
       result.innerHTML = `
-        <div class="result valid">
+        <div class="result valid animate-success">
           <h3>${t.valid}</h3>
           <p><strong>${t.name}:</strong> ${r.firstName} ${r.lastName}</p>
           <p><strong>${t.webinar}:</strong> ${r.webinarTitle}</p>
           <p><strong>${t.webinarDate}:</strong> ${r.webinarDate}</p>
           <p><strong>${t.dateIssued}:</strong> ${r.dateIssued}</p>
           <p><strong>${t.certificateId}:</strong> ${r.certificateId}</p>
+          <div class="print-actions">
+            <button onclick="window.print()">${t.print}</button>
+          </div>
         </div>`;
     } catch {
       result.innerHTML = `
@@ -296,7 +325,8 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     applyTranslations();
-    const cert = getCertFromURL();
+    const params = new URLSearchParams(window.location.search);
+    const cert = params.get("cert");
     if (cert) verifyCertificate(cert);
   });
 </script>
