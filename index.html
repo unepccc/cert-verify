@@ -222,6 +222,10 @@ function applyTranslations() {
 function setLanguage(l) {
   lang = l;
   applyTranslations();
+
+  // Re-run verification if a certificate is already loaded
+  const currentCert = document.getElementById("certInput").value.trim();
+  if (currentCert) verifyCertificate(currentCert);
 }
 
 function manualVerify() {
@@ -269,7 +273,14 @@ async function verifyCertificate(certId) {
   }
 }
 
+// ✅ Auto‑verify if CERT is present in URL
 applyTranslations();
+const urlParams = new URLSearchParams(window.location.search);
+const certFromURL = urlParams.get("cert");
+if (certFromURL) {
+  document.getElementById("certInput").value = certFromURL;
+  verifyCertificate(certFromURL);
+}
 </script>
 
 </body>
