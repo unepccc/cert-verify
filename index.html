@@ -215,6 +215,48 @@ Contact: aristeidis.tsakiris@un.org
 
     .btn-print:hover { background: #145c37; }
 
+    /* ── Verified-on timestamp ── */
+    .verified-on {
+      margin-top: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .verified-on::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--valid-green);
+      animation: pulse 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .revoked .verified-on::before {
+      background: var(--revoked-amber);
+    }
+
+    .verified-time {
+      font-weight: 500;
+      color: var(--text);
+      animation: fadeInTime 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    @keyframes fadeInTime {
+      from { opacity: 0; transform: translateX(-4px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
     /* ── Result panels ── */
     #verification-result {
       margin-top: 28px;
@@ -435,7 +477,8 @@ const translations = {
     dateIssued:   "Date of issue",
     certificateId:"Certificate ID",
     footer:       "This is an official certificate verification service of the UNEP Copenhagen Climate Centre. Certificates are issued for participation in UNEP-CCC capacity development webinars.",
-    printBtn:     "Print / Save Certificate"
+    printBtn:     "Print / Save Certificate",
+    verifiedOn:   "Verified on"
   },
   fr: {
     title:        "Vérification du certificat",
@@ -455,7 +498,8 @@ const translations = {
     dateIssued:   "Date de délivrance",
     certificateId:"Identifiant du certificat",
     footer:       "Il s'agit du service officiel de vérification des certificats du PNUE Centre Climatique de Copenhague.",
-    printBtn:     "Imprimer / Enregistrer le certificat"
+    printBtn:     "Imprimer / Enregistrer le certificat",
+    verifiedOn:   "Vérifié le"
   },
   es: {
     title:        "Verificación de certificado",
@@ -475,7 +519,8 @@ const translations = {
     dateIssued:   "Fecha de emisión",
     certificateId:"ID del certificado",
     footer:       "Este es el servicio oficial de verificación de certificados del Centro Climático de Copenhague del PNUMA.",
-    printBtn:     "Imprimir / Guardar certificado"
+    printBtn:     "Imprimir / Guardar certificado",
+    verifiedOn:   "Verificado el"
   },
   zh: {
     title:        "证书验证",
@@ -495,7 +540,8 @@ const translations = {
     dateIssued:   "签发日期",
     certificateId:"证书编号",
     footer:       "这是联合国环境规划署哥本哈根气候中心的官方证书验证服务。",
-    printBtn:     "打印 / 保存证书"
+    printBtn:     "打印 / 保存证书",
+    verifiedOn:   "验证时间"
   }
 };
 
@@ -561,6 +607,14 @@ async function verifyCertificate(certId) {
 
     const r = await resp.json();
 
+    // Capture verification timestamp
+    const now = new Date();
+    const verifiedOn = now.toLocaleString("en-GB", {
+      day: "numeric", month: "long", year: "numeric",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      timeZoneName: "short"
+    });
+
     if (r.status === "Revoked") {
       result.innerHTML = `
         <div class="result-panel revoked">
@@ -575,6 +629,7 @@ async function verifyCertificate(certId) {
             <dt>${t.certificateId}</dt><dd class="cert-id">${r.certificateId}</dd>
           </dl>
           <div class="revoke-note">${t.revokedNote}</div>
+          <div class="verified-on" id="verified-stamp">${t.verifiedOn} <span class="verified-time">${verifiedOn}</span></div>
         </div>`;
     } else {
       result.innerHTML = `
@@ -589,8 +644,9 @@ async function verifyCertificate(certId) {
             <dt>${t.dateIssued}</dt>   <dd>${r.dateIssued}</dd>
             <dt>${t.certificateId}</dt><dd class="cert-id">${r.certificateId}</dd>
           </dl>
-          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--valid-border);">
-            <button class="btn-print" onclick='printCertificate(${JSON.stringify(r)})'>
+          <div class="verified-on" id="verified-stamp">${t.verifiedOn} <span class="verified-time">${verifiedOn}</span></div>
+          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--valid-border);">
+            <button class="btn-print" onclick='printCertificate(${JSON.stringify(r)}, "${verifiedOn}")'>
               ⬇ ${t.printBtn}
             </button>
           </div>
@@ -620,7 +676,7 @@ if (certFromURL) {
 
 // ── Print Certificate ─────────────────────────────────────────────────────
 
-function printCertificate(r) {
+function printCertificate(r, verifiedOn) {
   const verifyUrl = `https://unepccc.github.io/cert-verify/?cert=${encodeURIComponent(r.certificateId)}`;
   const qrApiUrl  = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(verifyUrl)}`;
 
@@ -770,6 +826,30 @@ function printCertificate(r) {
       margin-top: 5px;
     }
 
+    .cert-verified {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #5a6e82;
+      margin-top: 4px;
+    }
+
+    .cert-verified::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #1a7a4a;
+      flex-shrink: 0;
+    }
+
+    .cert-verified span {
+      color: #1a2e3b;
+      font-weight: 500;
+    }
+
     /* ── Footer bar ── */
     .cert-footer {
       display: flex;
@@ -824,6 +904,7 @@ function printCertificate(r) {
     <div class="cert-meta">
       <p class="cert-meta-line">Certificate ID: <span>${r.certificateId}</span></p>
       <p class="cert-meta-line">Verification link: <span>https://unepccc.github.io/cert-verify/?cert=${r.certificateId}</span></p>
+      <p class="cert-meta-line cert-verified">Verified on: <span>${verifiedOn}</span></p>
       <p class="cert-scan-label">Scan the QR code for certificate verification</p>
       <img class="cert-qr" src="${qrApiUrl}" alt="QR code for certificate verification" />
     </div>
