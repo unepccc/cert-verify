@@ -1,4 +1,4 @@
-﻿"CertificateID","First Name","Last Name","Email","WebinarTitle","Webinar Date","DateIssued","Status","VerificationURL","Verification Notes (internal)"
-"UNEPCCC-WEB-2026-825480","Alice",".","alice@obrien-energy.com","Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment","11/5/2025","4/14/2026 2:27 PM","Revoked","https://unepccc.github.io/cert-verify/",
-"UNEPCCC-WEB-2026-092206","Aristeidis","Tsakiris","mythodia@gmail.com","Maritime Decarbonization: A Critical Component of the Global Climate Action Agenda","4/24/2025","4/17/2026 4:12 PM","Valid","https://unepccc.github.io/cert-verify/?cert=UNEPCCC-WEB-2026-092206",
-"UNEPCCC-WEB-2026-566657","Alice",".","alice@obrien-energy.com","Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment","11/5/2025","4/27/2026 9:59 AM","Valid","https://unepccc.github.io/cert-verify/?cert=UNEPCCC-WEB-2026-566657",
+﻿CertificateID,First Name,Last Name,WebinarTitle,Webinar Date,DateIssued,Status,VerificationURL,Verification Notes (internal)
+UNEPCCC-WEB-2026-825480,Alice,.,Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment,11/05/2025,4/14/2026 2:27 PM,Revoked,https://unepccc.github.io/cert-verify/,
+UNEPCCC-WEB-2026-092206,Aristeidis,Tsakiris,Maritime Decarbonization: A Critical Component of the Global Climate Action Agenda,4/24/2025,4/17/2026 4:12 PM,Valid,https://unepccc.github.io/cert-verify/?cert=UNEPCCC-WEB-2026-092206,
+UNEPCCC-WEB-2026-566657,Alice,.,Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment,11/05/2025,4/27/2026 9:59 AM,Valid,https://unepccc.github.io/cert-verify/?cert=UNEPCCC-WEB-2026-566657,
