@@ -46,44 +46,31 @@ Contact: aristeidis.tsakiris@un.org
       padding: 0 0 60px;
     }
 
-    /* ── Top bar ── */
-    .topbar {
-      background: #ffffff;
-      border-bottom: 3px solid var(--un-dark);
-      padding: 14px 28px;
+    /* ── Card top (logo + language inside the card) ── */
+    .card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 24px 36px 0;
+      background: var(--surface);
     }
 
-    .topbar-logo {
+    .card-top-logo {
       height: 44px;
       width: auto;
       display: block;
     }
 
-    .topbar-tagline {
-      font-family: 'Source Serif 4', serif;
-      font-size: 13px;
-      color: var(--text-muted);
-      letter-spacing: 0.02em;
-    }
-
-    /* ── Language bar ── */
-    .lang-bar {
-      background: #e8eef5;
-      border-bottom: 1px solid var(--border);
-      padding: 7px 24px;
+    .lang-group {
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
       gap: 4px;
     }
 
-    .lang-bar span {
+    .lang-group span {
       font-size: 12px;
       color: var(--text-muted);
-      margin-right: 6px;
-      line-height: 26px;
+      margin-right: 4px;
     }
 
     .lang-btn {
@@ -108,7 +95,7 @@ Contact: aristeidis.tsakiris@un.org
     /* ── Main card ── */
     .container {
       max-width: 760px;
-      margin: 36px auto;
+      margin: 48px auto;
       padding: 0 16px;
     }
 
@@ -120,23 +107,24 @@ Contact: aristeidis.tsakiris@un.org
     }
 
     .card-header {
-      background: linear-gradient(135deg, var(--un-dark) 0%, #1a5c3a 100%);
-      padding: 32px 36px 28px;
-      color: #fff;
+      padding: 20px 36px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
     }
 
     .card-header h1 {
       font-family: 'Source Serif 4', serif;
       font-weight: 600;
-      font-size: 26px;
+      font-size: 24px;
       letter-spacing: -0.01em;
       line-height: 1.2;
+      color: var(--un-dark);
     }
 
     .card-header p {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 14px;
-      opacity: 0.85;
+      color: var(--text-muted);
       max-width: 520px;
       line-height: 1.6;
     }
@@ -400,40 +388,38 @@ Contact: aristeidis.tsakiris@un.org
 
     /* ── Responsive ── */
     @media (max-width: 520px) {
-      .card-header, .card-body { padding: 24px 20px; }
+      .card-top { padding: 16px 20px 0; }
+      .card-top-logo { height: 32px; }
+      .card-header, .card-body { padding: 20px 20px; }
       .card-footer { padding: 16px 20px; }
       .search-row { flex-direction: column; }
       .cert-fields { grid-template-columns: 1fr; gap: 4px; }
       .cert-fields dt { margin-top: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
-      .topbar-logo { height: 32px; }
-      .topbar-tagline { display: none; }
+      .lang-group span { display: none; }
     }
   </style>
 </head>
 
 <body>
 
-<!-- Top bar -->
-<div class="topbar">
-  <img
-    class="topbar-logo"
-    src="assets/unepccc-logo.png"
-    alt="UNEP Copenhagen Climate Centre"
-  />
-  <span class="topbar-tagline">Certificate Verification Service</span>
-</div>
-
-<!-- Language bar -->
-<div class="lang-bar">
-  <span id="langLabel">Language:</span>
-  <button class="lang-btn active" onclick="setLanguage('en')" id="btn-en">EN</button>
-  <button class="lang-btn" onclick="setLanguage('fr')" id="btn-fr">FR</button>
-  <button class="lang-btn" onclick="setLanguage('es')" id="btn-es">ES</button>
-  <button class="lang-btn" onclick="setLanguage('zh')" id="btn-zh">中文</button>
-</div>
-
 <div class="container">
   <div class="card">
+
+    <!-- Logo + language switcher inside the card -->
+    <div class="card-top">
+      <img
+        class="card-top-logo"
+        src="assets/unepccc-logo.png"
+        alt="UNEP Copenhagen Climate Centre"
+      />
+      <div class="lang-group">
+        <span id="langLabel">Language:</span>
+        <button class="lang-btn active" onclick="setLanguage('en')" id="btn-en">EN</button>
+        <button class="lang-btn" onclick="setLanguage('fr')" id="btn-fr">FR</button>
+        <button class="lang-btn" onclick="setLanguage('es')" id="btn-es">ES</button>
+        <button class="lang-btn" onclick="setLanguage('zh')" id="btn-zh">中文</button>
+      </div>
+    </div>
 
     <div class="card-header">
       <h1 id="title"></h1>
