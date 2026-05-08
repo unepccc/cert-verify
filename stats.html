@@ -1,0 +1,426 @@
+<!--
+UNEP‑CCC Certificate Verification – Statistics Page
+Version: 1.1
+Author: Aristeidis Tsakiris
+Contact: aristeidis.tsakiris@un.org
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificate Statistics – UNEP Copenhagen Climate Centre</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@300;400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --un-blue:     #009edb;
+      --un-dark:     #1a3a5c;
+      --un-mid:      #2e6da4;
+      --un-green:    #4caf50;
+      --valid-green: #1a7a4a;
+      --surface:     #ffffff;
+      --bg:          #f0f4f8;
+      --text:        #1c2b3a;
+      --text-muted:  #5a6e82;
+      --border:      #d8e2ec;
+      --radius:      10px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 860px;
+      margin: 48px auto;
+      padding: 0 16px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.09);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    /* ── Card top ── */
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 36px 0;
+    }
+
+    .card-top-logo {
+      height: 44px;
+      width: auto;
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: var(--un-mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    /* ── Card header ── */
+    .card-header {
+      padding: 20px 36px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-header h1 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--un-dark);
+    }
+
+    .card-header p {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── Card body ── */
+    .card-body {
+      padding: 32px 36px;
+    }
+
+    /* ── Summary tiles ── */
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .tile {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+    }
+
+    .tile-value {
+      font-family: 'Source Serif 4', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--un-dark);
+      line-height: 1;
+    }
+
+    .tile-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .tile.valid   .tile-value { color: var(--valid-green); }
+    .tile.revoked .tile-value { color: #9a6200; }
+    .tile.webinars .tile-value { color: var(--un-mid); }
+
+    /* ── Section headers ── */
+    .section-title {
+      font-family: 'Source Serif 4', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--un-dark);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Year chart ── */
+    .year-chart {
+      margin-bottom: 36px;
+    }
+
+    .year-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      height: 100px;
+      padding-bottom: 8px;
+    }
+
+    .year-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .year-bar-wrap {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      height: 80px;
+    }
+
+    .year-bar {
+      width: 100%;
+      background: var(--un-blue);
+      border-radius: 4px 4px 0 0;
+      transition: height 0.4s ease;
+      min-height: 4px;
+    }
+
+    .year-bar-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .year-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* ── Webinar table ── */
+    .webinar-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .webinar-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0 12px 10px 0;
+      border-bottom: 1.5px solid var(--border);
+    }
+
+    .webinar-table td {
+      padding: 12px 12px 12px 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .webinar-table tr:last-child td { border-bottom: none; }
+
+    .webinar-table .col-count {
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--un-dark);
+      white-space: nowrap;
+    }
+
+    .badge-valid {
+      display: inline-block;
+      background: #edf7f1;
+      color: var(--valid-green);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-revoked {
+      display: inline-block;
+      background: #fdf6e3;
+      color: #9a6200;
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .card-footer {
+      padding: 16px 36px;
+      background: #f7f9fb;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── Loading / error ── */
+    .status-msg {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--un-mid);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .card-top, .card-header, .card-body { padding-left: 20px; padding-right: 20px; }
+      .card-footer { padding: 14px 20px; }
+      .tiles { grid-template-columns: repeat(2, 1fr); }
+      .card-top-logo { height: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <div class="card-top">
+      <img class="card-top-logo"
+           src="assets/unepccc-logo.png"
+           alt="UNEP Copenhagen Climate Centre" />
+      <a class="back-link" href="index.html">← Verify a certificate</a>
+    </div>
+
+    <div class="card-header">
+      <h1>Certificate Statistics</h1>
+      <p id="generated-at">Loading…</p>
+    </div>
+
+    <div class="card-body" id="stats-body">
+      <div class="status-msg">
+        <span class="spinner"></span> Loading statistics…
+      </div>
+    </div>
+
+    <div class="card-footer">
+      UNEP Copenhagen Climate Centre · Marmorvej 51 · 2100 Copenhagen Ø · Denmark
+    </div>
+
+  </div>
+</div>
+
+<script>
+async function loadStats() {
+  const body = document.getElementById("stats-body");
+
+  try {
+    const resp = await fetch("stats.json");
+    if (!resp.ok) throw new Error("not_found");
+    const s = await resp.json();
+
+    document.getElementById("generated-at").innerText =
+      `Data updated: ${s.generatedAt}`;
+
+    // ── Summary tiles ──────────────────────────────────────────────────────
+    const tilesHtml = `
+      <div class="tiles">
+        <div class="tile">
+          <div class="tile-value">${s.totalCertificates}</div>
+          <div class="tile-label">Total Certificates</div>
+        </div>
+        <div class="tile valid">
+          <div class="tile-value">${s.totalValid}</div>
+          <div class="tile-label">Valid</div>
+        </div>
+        <div class="tile revoked">
+          <div class="tile-value">${s.totalRevoked}</div>
+          <div class="tile-label">Revoked</div>
+        </div>
+        <div class="tile webinars">
+          <div class="tile-value">${s.totalWebinars}</div>
+          <div class="tile-label">Webinars</div>
+        </div>
+      </div>`;
+
+    // ── Year chart ─────────────────────────────────────────────────────────
+    const years  = Object.keys(s.byYear);
+    const counts = Object.values(s.byYear);
+    const maxCount = Math.max(...counts, 1);
+
+    const barsHtml = years.map(y => {
+      const count  = s.byYear[y];
+      const height = Math.round((count / maxCount) * 80);
+      return `
+        <div class="year-col">
+          <div class="year-bar-count">${count}</div>
+          <div class="year-bar-wrap">
+            <div class="year-bar" style="height:${height}px"></div>
+          </div>
+          <div class="year-label">${y}</div>
+        </div>`;
+    }).join("");
+
+    const yearChartHtml = years.length > 0 ? `
+      <div class="year-chart">
+        <div class="section-title">Certificates by Year</div>
+        <div class="year-bars">${barsHtml}</div>
+      </div>` : "";
+
+    // ── Webinar table ──────────────────────────────────────────────────────
+    const rowsHtml = s.webinars.map(w => `
+      <tr>
+        <td>${w.title}<br>
+          <span style="font-size:11px;color:var(--text-muted)">${w.webinarDate}</span>
+        </td>
+        <td class="col-count">${w.total}</td>
+        <td class="col-count">
+          <span class="badge-valid">${w.valid}</span>
+          ${w.revoked > 0 ? `<span class="badge-revoked">${w.revoked}</span>` : ""}
+        </td>
+      </tr>`).join("");
+
+    const webinarTableHtml = `
+      <div>
+        <div class="section-title">Certificates by Webinar</div>
+        <table class="webinar-table">
+          <thead>
+            <tr>
+              <th>Webinar</th>
+              <th style="text-align:center">Total</th>
+              <th style="text-align:center">Status</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>`;
+
+    body.innerHTML = tilesHtml + yearChartHtml + webinarTableHtml;
+
+  } catch {
+    body.innerHTML = `
+      <div class="status-msg">
+        Statistics are not yet available. They will appear after the first
+        CSV upload and GitHub Action run.
+      </div>`;
+  }
+}
+
+loadStats();
+</script>
+
+</body>
+</html>
