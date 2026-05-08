@@ -203,6 +203,37 @@ Contact: aristeidis.tsakiris@un.org
 
     .btn-print:hover { background: #145c37; }
 
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 20px;
+      background: var(--un-dark);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-share:hover { background: var(--un-mid); }
+
+    .btn-share.copied {
+      background: var(--valid-green);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--valid-border);
+    }
+
     /* ── Verified-on timestamp ── */
     .verified-on {
       margin-top: 16px;
@@ -438,7 +469,11 @@ Contact: aristeidis.tsakiris@un.org
       <section id="verification-result" aria-live="polite"></section>
     </div>
 
-    <div class="card-footer" id="footerText"></div>
+    <div class="card-footer">
+      <span id="footerText"></span>
+      &nbsp;·&nbsp;
+      <a href="stats.html" style="color:var(--text-muted);font-size:12px;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">📊 Certificate Statistics</a>
+    </div>
 
   </div>
 </div>
@@ -464,6 +499,8 @@ const translations = {
     certificateId:"Certificate ID",
     footer:       "This is an official certificate verification service of the UNEP Copenhagen Climate Centre. Certificates are issued for participation in UNEP-CCC capacity development webinars.",
     printBtn:     "Print / Save Certificate",
+    shareBtn:     "Share",
+    shareCopied:  "Link copied!",
     verifiedOn:   "Verified on"
   },
   fr: {
@@ -485,6 +522,8 @@ const translations = {
     certificateId:"Identifiant du certificat",
     footer:       "Il s'agit du service officiel de vérification des certificats du PNUE Centre Climatique de Copenhague.",
     printBtn:     "Imprimer / Enregistrer le certificat",
+    shareBtn:     "Partager",
+    shareCopied:  "Lien copié !",
     verifiedOn:   "Vérifié le"
   },
   es: {
@@ -506,6 +545,8 @@ const translations = {
     certificateId:"ID del certificado",
     footer:       "Este es el servicio oficial de verificación de certificados del Centro Climático de Copenhague del PNUMA.",
     printBtn:     "Imprimir / Guardar certificado",
+    shareBtn:     "Compartir",
+    shareCopied:  "¡Enlace copiado!",
     verifiedOn:   "Verificado el"
   },
   zh: {
@@ -527,6 +568,8 @@ const translations = {
     certificateId:"证书编号",
     footer:       "这是联合国环境规划署哥本哈根气候中心的官方证书验证服务。",
     printBtn:     "打印 / 保存证书",
+    shareBtn:     "分享",
+    shareCopied:  "链接已复制！",
     verifiedOn:   "验证时间"
   }
 };
@@ -631,9 +674,12 @@ async function verifyCertificate(certId) {
             <dt>${t.certificateId}</dt><dd class="cert-id">${r.certificateId}</dd>
           </dl>
           <div class="verified-on" id="verified-stamp">${t.verifiedOn} <span class="verified-time">${verifiedOn}</span></div>
-          <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--valid-border);">
+          <div class="action-buttons">
             <button class="btn-print" onclick='printCertificate(${JSON.stringify(r)}, "${verifiedOn}")'>
               ⬇ ${t.printBtn}
+            </button>
+            <button class="btn-share" id="shareBtn" onclick='shareCertificate("${r.certificateId}")'>
+              ↗ ${t.shareBtn}
             </button>
           </div>
         </div>`;
@@ -660,7 +706,37 @@ if (certFromURL) {
   verifyCertificate(cleaned);
 }
 
-// ── Print Certificate ─────────────────────────────────────────────────────
+// ── Share Certificate ─────────────────────────────────────────────────────
+
+function shareCertificate(certId) {
+  const t   = translations[lang];
+  const url = `https://unepccc.github.io/cert-verify/?cert=${encodeURIComponent(certId)}`;
+  const btn = document.getElementById("shareBtn");
+
+  // Use native share sheet on mobile if available
+  if (navigator.share) {
+    navigator.share({
+      title: "UNEP-CCC Certificate of Attendance",
+      text:  `Verify certificate ${certId}`,
+      url:   url
+    }).catch(() => {}); // user cancelled — no error needed
+    return;
+  }
+
+  // Fallback: copy to clipboard
+  navigator.clipboard.writeText(url).then(() => {
+    const original = btn.innerHTML;
+    btn.innerHTML  = `✓ ${t.shareCopied}`;
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.innerHTML = `↗ ${t.shareBtn}`;
+      btn.classList.remove("copied");
+    }, 2500);
+  }).catch(() => {
+    // Final fallback: prompt with URL
+    window.prompt("Copy this link:", url);
+  });
+}
 
 function printCertificate(r, verifiedOn) {
   const verifyUrl = `https://unepccc.github.io/cert-verify/?cert=${encodeURIComponent(r.certificateId)}`;
