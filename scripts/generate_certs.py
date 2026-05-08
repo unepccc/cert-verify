@@ -131,6 +131,13 @@ def main():
     skipped    = 0
     has_errors = False
 
+    # Stats accumulators
+    stats_webinars   = {}   # webinarTitle → {date, count, valid, revoked}
+    stats_by_year    = {}   # year → count
+    total_valid      = 0
+    total_revoked    = 0
+    latest_issued    = ""
+
     with open(CSV_FILE, newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
 
@@ -171,6 +178,66 @@ def main():
 
             print(f"OK    {out_path}  [{payload['status']}]")
             written += 1
+
+            # ── Accumulate stats ──────────────────────────────────────────
+            status = payload["status"]
+            title  = payload["webinarTitle"]
+            w_date = payload["webinarDate"]
+
+            # Extract year from dateIssued (format: "14 April 2026, ...")
+            try:
+                year = payload["dateIssued"].split(" ")[2].replace(",", "")
+            except IndexError:
+                year = "Unknown"
+
+            if title not in stats_webinars:
+                stats_webinars[title] = {
+                    "webinarDate": w_date,
+                    "total": 0, "valid": 0, "revoked": 0
+                }
+            stats_webinars[title]["total"]   += 1
+            stats_webinars[title]["valid"]   += 1 if status == "Valid"   else 0
+            stats_webinars[title]["revoked"] += 1 if status == "Revoked" else 0
+
+            stats_by_year[year] = stats_by_year.get(year, 0) + 1
+
+            if status == "Valid":   total_valid   += 1
+            if status == "Revoked": total_revoked += 1
+
+            if not latest_issued or payload["dateIssued"] > latest_issued:
+                latest_issued = payload["dateIssued"]
+
+    # ── Write stats.json ──────────────────────────────────────────────────────
+    from datetime import timezone
+    import datetime as dt
+
+    stats_payload = {
+        "generatedAt":    dt.datetime.now(timezone.utc).strftime("%-d %B %Y, %H:%M:%S (UTC)"),
+        "totalCertificates": written,
+        "totalValid":     total_valid,
+        "totalRevoked":   total_revoked,
+        "totalWebinars":  len(stats_webinars),
+        "byYear":         dict(sorted(stats_by_year.items())),
+        "webinars":       [
+            {
+                "title":      title,
+                "webinarDate": data["webinarDate"],
+                "total":      data["total"],
+                "valid":      data["valid"],
+                "revoked":    data["revoked"],
+            }
+            for title, data in sorted(
+                stats_webinars.items(),
+                key=lambda x: x[1]["webinarDate"],
+                reverse=True
+            )
+        ]
+    }
+
+    stats_path = "stats.json"
+    with open(stats_path, "w", encoding="utf-8") as sf:
+        json.dump(stats_payload, sf, ensure_ascii=False, indent=2)
+    print(f"\nOK    {stats_path}")
 
     print(f"\n── Summary ──────────────────────────")
     print(f"  Written : {written}")
