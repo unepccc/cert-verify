@@ -1,15 +1,14 @@
 {
-  "generatedAt": "23 June 2026, 11:00:30 (UTC)",
-  "totalCertificates": 6,
-  "totalValid": 5,
+  "generatedAt": "23 June 2026, 12:57:27 (UTC)",
+  "totalCertificates": 2,
+  "totalValid": 1,
   "totalRevoked": 1,
-  "totalActivities": 5,
+  "totalActivities": 1,
   "byYear": {
-    "2026": 6
+    "2026": 2
   },
   "byType": {
-    "Webinar": 4,
-    "Workshop": 2
+    "Webinar": 2
   },
   "activities": [
     {
@@ -19,38 +18,6 @@
       "total": 2,
       "valid": 1,
       "revoked": 1
-    },
-    {
-      "title": "Future of Energy Efficiency",
-      "type": "Workshop",
-      "activityDate": "4 June 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
-    {
-      "title": "Article 6 and Low-Carbon Cement: Strengthening Capacity for LC3 Deployment in Pakistan",
-      "type": "Webinar",
-      "activityDate": "31 March 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
-    {
-      "title": "Maritime Decarbonization: A Critical Component of the Global Climate Action Agenda",
-      "type": "Webinar",
-      "activityDate": "24 April 2025",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
-    {
-      "title": "Workshop on Energy Efficiency",
-      "type": "Workshop",
-      "activityDate": "1 June 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
     }
   ]
 }
