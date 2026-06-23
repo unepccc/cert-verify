@@ -68,15 +68,26 @@ cert-verify/
 ## Certificate ID Format
 
 ```
-UNEPCCC-WEB-YYYY-NNNNNN
+UNEPCCC-<TYPE>-YYYY-NNNNNN
 ```
 
 | Part | Description |
 |------|-------------|
 | `UNEPCCC` | Issuing organisation |
-| `WEB` | Certificate type (webinar) |
+| `<TYPE>` | Activity type code (see below) |
 | `YYYY` | Year of issuance |
 | `NNNNNN` | Six-digit random number |
+
+**Activity type codes:**
+
+| Code | Activity Type |
+|------|---------------|
+| `WEB` | Webinar |
+| `WSP` | Workshop |
+| `TRN` | Training course |
+| `CNF` | Conference |
+
+The activity type is taken from the `Activity Type` column in the data. If that column is blank, it is derived automatically from the type code in the Certificate ID.
 
 ---
 
@@ -86,12 +97,13 @@ Each certificate is stored as a single JSON file named `<CertificateID>.json`:
 
 ```json
 {
-  "certificateId": "UNEPCCC-WEB-2026-092206",
-  "firstName": "Aristeidis",
-  "lastName": "Tsakiris",
-  "webinarTitle": "Maritime Decarbonization: A Critical Component of the Global Climate Action Agenda",
-  "webinarDate": "24 April 2025",
-  "dateIssued": "17 April 2026, 16:12:00 (UTC+02)",
+  "certificateId": "UNEPCCC-WSP-2026-445566",
+  "firstName": "Maria",
+  "lastName": "Santos",
+  "activityType": "Workshop",
+  "activityTitle": "Designing NDCs: A Practical Workshop for Policymakers",
+  "activityDate": "10 June 2026",
+  "dateIssued": "12 June 2026, 10:30:00 (UTC+02)",
   "status": "Valid"
 }
 ```
@@ -169,13 +181,16 @@ If the automated pipeline is unavailable, certificates can be published manually
 
 | Column | Example |
 |--------|---------|
-| `CertificateID` | `UNEPCCC-WEB-2026-092206` |
-| `First Name` | `Aristeidis` |
-| `Last Name` | `Tsakiris` |
-| `WebinarTitle` | `Maritime Decarbonization...` |
-| `Webinar Date` | `4/24/2025` |
-| `DateIssued` | `4/17/2026 4:12 PM` |
+| `CertificateID` | `UNEPCCC-WSP-2026-445566` |
+| `First Name` | `Maria` |
+| `Last Name` | `Santos` |
+| `Activity Type` | `Workshop` |
+| `Activity Title` | `Designing NDCs: A Practical Workshop...` |
+| `Activity Date` | `6/10/2026` |
+| `DateIssued` | `6/12/2026 10:30 AM` |
 | `Status` | `Valid` or `Revoked` |
+
+> For backward compatibility, the legacy column names `WebinarTitle` and `Webinar Date` are still accepted, and a missing `Activity Type` is derived from the Certificate ID type code.
 
 ---
 
@@ -206,7 +221,8 @@ If the automated pipeline is unavailable, certificates can be published manually
 | Version | Description |
 |---------|-------------|
 | v1.0 | Static verification, no revocation support |
-| v1.1 | Revocation-aware, automated pipeline, print/share, statistics (current) |
+| v1.1 | Revocation-aware, automated pipeline, print/share, statistics |
+| v1.2 | Multi-activity support (webinars, workshops, training, conferences) (current) |
 
 Minor versions = behavioural changes · Major versions = architectural changes
 
