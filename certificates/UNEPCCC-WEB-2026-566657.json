@@ -2,8 +2,9 @@
   "certificateId": "UNEPCCC-WEB-2026-566657",
   "firstName": "Alice",
   "lastName": ".",
-  "webinarTitle": "Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment",
-  "webinarDate": "5 November 2025",
+  "activityType": "Webinar",
+  "activityTitle": "Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment",
+  "activityDate": "5 November 2025",
   "dateIssued": "27 April 2026, 09:59:00 (UTC+02)",
   "status": "Valid"
 }
