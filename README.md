@@ -50,7 +50,7 @@ cert-verify/
 ├── stats.json                  # Auto-generated statistics — updated by GitHub Action
 │
 ├── certificates/               # Auto-generated — one JSON file per certificate
-│   └── UNEPCCC-WEB-YYYY-NNNNNN.json
+│   └── UNEPCCC-<TYPE>-YYYY-NNNNNN.json
 │
 ├── assets/
 │   └── unepccc-logo.png        # UNEP-CCC logo (transparent background)
@@ -146,9 +146,10 @@ The public page shows exactly one of three states:
 A public statistics page is available at [/stats.html](https://unepccc.github.io/cert-verify/stats.html) showing:
 
 - Total certificates issued, valid, and revoked
-- Total number of webinars
+- Total number of activities
+- Certificates by activity type (bar chart)
 - Certificates issued by year (bar chart)
-- Breakdown per webinar with status badges
+- Breakdown per activity with status badges
 
 Statistics are regenerated automatically by the GitHub Action on every CSV update — no manual maintenance required.
 
@@ -184,7 +185,7 @@ If the automated pipeline is unavailable, certificates can be published manually
 | `CertificateID` | `UNEPCCC-WSP-2026-445566` |
 | `First Name` | `Maria` |
 | `Last Name` | `Santos` |
-| `Activity Type` | `Workshop` |
+| `Activity Type` *(optional)* | `Workshop` |
 | `Activity Title` | `Designing NDCs: A Practical Workshop...` |
 | `Activity Date` | `6/10/2026` |
 | `DateIssued` | `6/12/2026 10:30 AM` |
