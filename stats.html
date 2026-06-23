@@ -254,6 +254,17 @@ Contact: aristeidis.tsakiris@un.org
       font-weight: 600;
     }
 
+    .badge-type {
+      display: inline-block;
+      background: #eef4fa;
+      color: var(--un-mid);
+      border-radius: 4px;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
     /* ── Footer ── */
     .card-footer {
       padding: 16px 36px;
@@ -351,8 +362,8 @@ async function loadStats() {
           <div class="tile-label">Revoked</div>
         </div>
         <div class="tile webinars">
-          <div class="tile-value">${s.totalWebinars}</div>
-          <div class="tile-label">Webinars</div>
+          <div class="tile-value">${s.totalActivities ?? s.totalWebinars ?? 0}</div>
+          <div class="tile-label">Activities</div>
         </div>
       </div>`;
 
@@ -380,12 +391,38 @@ async function loadStats() {
         <div class="year-bars">${barsHtml}</div>
       </div>` : "";
 
-    // ── Webinar table ──────────────────────────────────────────────────────
-    const rowsHtml = s.webinars.map(w => `
+    // ── Activity type chart ────────────────────────────────────────────────
+    const typeChartHtml = (s.byType && Object.keys(s.byType).length > 0) ? `
+      <div class="year-chart">
+        <div class="section-title">Certificates by Activity Type</div>
+        <div class="year-bars">${
+          (() => {
+            const types = Object.keys(s.byType);
+            const tMax  = Math.max(...Object.values(s.byType), 1);
+            return types.map(ty => {
+              const c = s.byType[ty];
+              const h = Math.round((c / tMax) * 80);
+              return `
+                <div class="year-col">
+                  <div class="year-bar-count">${c}</div>
+                  <div class="year-bar-wrap">
+                    <div class="year-bar" style="height:${h}px;background:var(--un-mid)"></div>
+                  </div>
+                  <div class="year-label">${ty}</div>
+                </div>`;
+            }).join("");
+          })()
+        }</div>
+      </div>` : "";
+
+    // ── Activity table ─────────────────────────────────────────────────────
+    const activities = s.activities || s.webinars || [];
+    const rowsHtml = activities.map(w => `
       <tr>
         <td>${w.title}<br>
-          <span style="font-size:11px;color:var(--text-muted)">${w.webinarDate}</span>
+          <span style="font-size:11px;color:var(--text-muted)">${w.activityDate || w.webinarDate || ""}</span>
         </td>
+        <td>${w.type ? `<span class="badge-type">${w.type}</span>` : ""}</td>
         <td class="col-count">${w.total}</td>
         <td class="col-count">
           <span class="badge-valid">${w.valid}</span>
@@ -395,11 +432,12 @@ async function loadStats() {
 
     const webinarTableHtml = `
       <div>
-        <div class="section-title">Certificates by Webinar</div>
+        <div class="section-title">Certificates by Activity</div>
         <table class="webinar-table">
           <thead>
             <tr>
-              <th>Webinar</th>
+              <th>Activity</th>
+              <th>Type</th>
               <th style="text-align:center">Total</th>
               <th style="text-align:center">Status</th>
             </tr>
@@ -408,7 +446,7 @@ async function loadStats() {
         </table>
       </div>`;
 
-    body.innerHTML = tilesHtml + yearChartHtml + webinarTableHtml;
+    body.innerHTML = tilesHtml + yearChartHtml + typeChartHtml + webinarTableHtml;
 
   } catch {
     body.innerHTML = `
