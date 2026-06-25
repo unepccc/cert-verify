@@ -1,15 +1,15 @@
 {
-  "generatedAt": "25 June 2026, 12:53:09 (UTC)",
-  "totalCertificates": 4,
-  "totalValid": 3,
+  "generatedAt": "25 June 2026, 12:56:27 (UTC)",
+  "totalCertificates": 5,
+  "totalValid": 4,
   "totalRevoked": 1,
-  "totalActivities": 3,
+  "totalActivities": 4,
   "byYear": {
-    "2026": 4
+    "2026": 5
   },
   "byType": {
     "Conference": 1,
-    "Webinar": 2,
+    "Webinar": 3,
     "Workshop": 1
   },
   "activities": [
@@ -33,6 +33,14 @@
       "title": "Workshop on Buildings",
       "type": "Workshop",
       "activityDate": "21 June 2026",
+      "total": 1,
+      "valid": 1,
+      "revoked": 0
+    },
+    {
+      "title": "Webinar on energy efficiency",
+      "type": "Webinar",
+      "activityDate": "20 June 2026",
       "total": 1,
       "valid": 1,
       "revoked": 0
