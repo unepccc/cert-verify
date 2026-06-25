@@ -1,46 +1,20 @@
 {
-  "generatedAt": "25 June 2026, 12:56:27 (UTC)",
-  "totalCertificates": 5,
-  "totalValid": 4,
-  "totalRevoked": 1,
-  "totalActivities": 4,
+  "generatedAt": "25 June 2026, 13:27:35 (UTC)",
+  "totalCertificates": 1,
+  "totalValid": 1,
+  "totalRevoked": 0,
+  "totalActivities": 1,
   "byYear": {
-    "2026": 5
+    "2026": 1
   },
   "byType": {
-    "Conference": 1,
-    "Webinar": 3,
     "Workshop": 1
   },
   "activities": [
     {
-      "title": "Crowdfunding Meets ESCOs: Accelerating the Energy Transition Through Citizen Investment",
-      "type": "Webinar",
-      "activityDate": "5 November 2025",
-      "total": 2,
-      "valid": 1,
-      "revoked": 1
-    },
-    {
-      "title": "Conference on Vehicles",
-      "type": "Conference",
-      "activityDate": "22 June 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
-    {
-      "title": "Workshop on Buildings",
+      "title": "test",
       "type": "Workshop",
-      "activityDate": "21 June 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
-    {
-      "title": "Webinar on energy efficiency",
-      "type": "Webinar",
-      "activityDate": "20 June 2026",
+      "activityDate": "2nd–4th June 2026",
       "total": 1,
       "valid": 1,
       "revoked": 0
