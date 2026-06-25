@@ -1,5 +1,5 @@
 {
-  "generatedAt": "25 June 2026, 12:33:44 (UTC)",
+  "generatedAt": "25 June 2026, 12:49:53 (UTC)",
   "totalCertificates": 3,
   "totalValid": 2,
   "totalRevoked": 1,
@@ -23,7 +23,7 @@
     {
       "title": "Workshop on Buildings",
       "type": "Workshop",
-      "activityDate": "24 June 2026",
+      "activityDate": "21 June 2026",
       "total": 1,
       "valid": 1,
       "revoked": 0
