@@ -1,14 +1,14 @@
 {
-  "generatedAt": "25 June 2026, 13:45:28 (UTC)",
-  "totalCertificates": 6,
-  "totalValid": 6,
+  "generatedAt": "25 June 2026, 13:46:44 (UTC)",
+  "totalCertificates": 7,
+  "totalValid": 7,
   "totalRevoked": 0,
   "totalActivities": 2,
   "byYear": {
-    "2026": 6
+    "2026": 7
   },
   "byType": {
-    "Workshop": 6
+    "Workshop": 7
   },
   "activities": [
     {
@@ -23,8 +23,8 @@
       "title": "Climate Finance and Project Proposal Development",
       "type": "Workshop",
       "activityDate": "2nd–4th June 2026",
-      "total": 5,
-      "valid": 5,
+      "total": 6,
+      "valid": 6,
       "revoked": 0
     }
   ]
