@@ -1,13 +1,14 @@
 {
-  "generatedAt": "25 June 2026, 12:49:53 (UTC)",
-  "totalCertificates": 3,
-  "totalValid": 2,
+  "generatedAt": "25 June 2026, 12:53:09 (UTC)",
+  "totalCertificates": 4,
+  "totalValid": 3,
   "totalRevoked": 1,
-  "totalActivities": 2,
+  "totalActivities": 3,
   "byYear": {
-    "2026": 3
+    "2026": 4
   },
   "byType": {
+    "Conference": 1,
     "Webinar": 2,
     "Workshop": 1
   },
@@ -19,6 +20,14 @@
       "total": 2,
       "valid": 1,
       "revoked": 1
+    },
+    {
+      "title": "Conference on Vehicles",
+      "type": "Conference",
+      "activityDate": "22 June 2026",
+      "total": 1,
+      "valid": 1,
+      "revoked": 0
     },
     {
       "title": "Workshop on Buildings",
