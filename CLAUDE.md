@@ -61,14 +61,21 @@ SharePoint exports dates in US format. The script converts them:
 
 ## GitHub Action
 
-`.github/workflows/generate-certs.yml` triggers only on pushes to `main` that touch `certificates.csv`. It runs `generate_certs.py`, then commits `certificates/` and `stats.json` back to `main` as `cert-bot`. The commit message includes `[skip ci]` to prevent a re-trigger loop.
+`.github/workflows/generate-certs.yml` regenerates the JSON on `main` from three triggers:
 
-Manual trigger is available via `workflow_dispatch` in the GitHub Actions UI.
+- **push** to `main` touching `certificates.csv` — the fast path; regenerates immediately.
+- **schedule** (hourly, at `:23`) — a safety net that regenerates even when the push trigger was skipped or missed. It only commits when a certificate file actually changed, so idle runs are no-ops.
+- **workflow_dispatch** — manual trigger from the GitHub Actions UI.
+
+It runs `generate_certs.py`, then commits `certificates/` and `stats.json` back to `main` as `cert-bot`. The bot's commit message includes `[skip ci]` to prevent a re-trigger loop.
+
+> **Do not put `[skip ci]` (or `[ci skip]` / `[no ci]`) in any commit that edits `certificates.csv`.** GitHub honors that token on the pushed commit and skips the push trigger, so the JSON is not generated on push. The hourly schedule will still catch it within the hour, but the instant path is lost.
 
 ## Key Conventions
 
 - **Never delete JSON files to revoke a certificate.** Set `Status` to `Revoked` in the CSV — the JSON file is updated in place and the page shows the Revoked state.
 - **Column names in `certificates.csv` are case-sensitive.** The script uses exact string matching against SharePoint's export headers.
 - The `certificates/` directory and `stats.json` are **generated files** — do not edit them manually. Regenerate by running the script or triggering the Action.
+- **Never put `[skip ci]` in a commit that edits `certificates.csv`.** It suppresses the push trigger that generates the JSON (the hourly schedule is only a fallback). `[skip ci]` is reserved for the bot's own regenerate commit.
 - `index.html` and `stats.html` are **self-contained** (inline CSS + JS). Keep them that way — there is intentionally no build pipeline.
 - The four UI languages in `index.html` (EN, FR, ES, 中文) are stored as a `translations` object in the inline JS. All UI strings must be added to all four language keys.

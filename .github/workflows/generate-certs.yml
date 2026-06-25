@@ -3,10 +3,22 @@ name: Generate Certificate JSON Files
 on:
   push:
     branches:
-      - main                   # Only run on commits to main branch
+      - main                   # Fast path: regenerate immediately on commits to main
     paths:
-      - 'certificates.csv'     # Only runs when this file is updated
-  workflow_dispatch:           # Also allows manual trigger from GitHub UI
+      - 'certificates.csv'     # ...that change the source CSV
+  schedule:
+    # Safety net so certificates are ALWAYS generated automatically. GitHub skips
+    # the push trigger above whenever a commit message contains [skip ci]; this
+    # hourly run regenerates regardless of the commit message (and also catches any
+    # missed push). It only commits when a certificate file actually changed, so
+    # idle runs are no-ops. Runs at :23 to dodge the top-of-hour Actions backlog.
+    - cron: '23 * * * *'
+  workflow_dispatch:           # Also allows manual trigger from the Actions UI
+
+# Prevent a scheduled run and a push-triggered run from racing on `git push`.
+concurrency:
+  group: generate-certs
+  cancel-in-progress: false
 
 jobs:
   generate:
@@ -33,5 +45,12 @@ jobs:
           git config user.name  "cert-bot"
           git config user.email "cert-bot@users.noreply.github.com"
           git add certificates/ stats.json
-          git diff --cached --quiet || git commit -m "chore: regenerate certificate JSON files [skip ci]"
-          git push origin main
+          # Commit only when a certificate JSON actually changed. stats.json's
+          # generatedAt timestamp changes on every run, so keying the commit on it
+          # would make the hourly safety-net run commit every hour for nothing.
+          if git diff --cached --quiet -- certificates/; then
+            echo "No certificate changes — nothing to commit."
+          else
+            git commit -m "chore: regenerate certificate JSON files [skip ci]"
+            git push origin main
+          fi
