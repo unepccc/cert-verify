@@ -60,6 +60,7 @@ COL_LAST      = "Last Name"
 COL_TYPE      = "Activity Type"                       # new (optional)
 COL_TITLE     = ["Activity Title", "WebinarTitle"]    # new, then old
 COL_DATE      = ["Activity Date", "Webinar Date"]     # new, then old
+COL_DATE_DISP = "Activity Date Display"               # new (optional) — free text
 COL_ISSUED    = "DateIssued"
 COL_STATUS    = "Status"
 
@@ -136,8 +137,10 @@ def validate_row(row: dict, title: str, date_raw: str) -> list:
             errors.append(f"  Column '{col}' is blank")
     if not title:
         errors.append("  Activity Title is blank (checked 'Activity Title' and 'WebinarTitle')")
-    if not date_raw:
-        errors.append("  Activity Date is blank (checked 'Activity Date' and 'Webinar Date')")
+    # A date is required: either the single Activity Date OR the free-text display field.
+    date_display = safe_str(row.get(COL_DATE_DISP, ""))
+    if not date_raw and not date_display:
+        errors.append("  Activity Date is blank (provide 'Activity Date' or 'Activity Date Display')")
     if COL_STATUS in row and row[COL_STATUS].strip() not in ALLOWED_STATUSES:
         errors.append(
             f"  Status '{row[COL_STATUS].strip()}' is invalid "
@@ -147,13 +150,18 @@ def validate_row(row: dict, title: str, date_raw: str) -> list:
 
 
 def row_to_json(row: dict, cert_id: str, title: str, date_raw: str) -> dict:
+    # Use the free-text display date if provided (e.g. "2nd–4th June 2026"),
+    # otherwise format the single Activity Date as normal (e.g. "2 June 2026").
+    date_display = safe_str(row.get(COL_DATE_DISP, ""))
+    activity_date = date_display if date_display else format_activity_date(date_raw)
+
     return {
         "certificateId": cert_id,
         "firstName":     safe_str(row[COL_FIRST]),
         "lastName":      safe_str(row[COL_LAST]),
         "activityType":  derive_activity_type(row, cert_id),
         "activityTitle": title,
-        "activityDate":  format_activity_date(date_raw),
+        "activityDate":  activity_date,
         "dateIssued":    format_date_issued(row[COL_ISSUED]),
         "status":        safe_str(row[COL_STATUS]),
     }
