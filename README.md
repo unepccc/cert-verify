@@ -1,6 +1,6 @@
 # UNEP-CCC Certificate Verification System
 
-**Version 1.1** · Public certificate verification for webinar attendance certificates issued by the [UNEP Copenhagen Climate Centre](https://unepccc.org/).
+**Version 1.2** · Public certificate verification for webinar attendance certificates issued by the [UNEP Copenhagen Climate Centre](https://unepccc.org/).
 
 🔗 **Live system:** [unepccc.github.io/cert-verify](https://unepccc.github.io/cert-verify/)
 📊 **Statistics:** [unepccc.github.io/cert-verify/stats.html](https://unepccc.github.io/cert-verify/stats.html)
