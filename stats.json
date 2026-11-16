@@ -1,25 +1,17 @@
 {
-  "generatedAt": "16 November 2026, 22:13 (UTC)",
-  "totalCertificates": 97,
-  "totalValid": 96,
+  "generatedAt": "16 November 2026, 22:17 (UTC)",
+  "totalCertificates": 96,
+  "totalValid": 95,
   "totalRevoked": 1,
-  "totalActivities": 4,
+  "totalActivities": 3,
   "byYear": {
-    "2026": 97
+    "2026": 96
   },
   "byType": {
-    "Webinar": 69,
+    "Webinar": 68,
     "Workshop": 28
   },
   "activities": [
-    {
-      "title": "Phase 2 test",
-      "type": "Webinar",
-      "activityDate": "16 November 2026",
-      "total": 1,
-      "valid": 1,
-      "revoked": 0
-    },
     {
       "title": "From Energy Audits to Action: Advancing Energy Efficiency in Buildings in Mauritius",
       "type": "Webinar",
