@@ -1,8 +1,8 @@
 {
-  "generatedAt": "25 November 2026, 11:25 (UTC)",
+  "generatedAt": "25 November 2026, 11:42 (UTC)",
   "totalCertificates": 98,
-  "totalValid": 97,
-  "totalRevoked": 1,
+  "totalValid": 96,
+  "totalRevoked": 2,
   "totalActivities": 5,
   "byYear": {
     "2026": 98
@@ -17,8 +17,8 @@
       "type": "Webinar",
       "activityDate": "25 November 2026",
       "total": 1,
-      "valid": 1,
-      "revoked": 0
+      "valid": 0,
+      "revoked": 1
     },
     {
       "title": "Phase 3 test",
