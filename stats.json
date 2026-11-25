@@ -1,17 +1,26 @@
 {
-  "generatedAt": "25 November 2026, 11:47 (UTC)",
-  "totalCertificates": 96,
-  "totalValid": 95,
+  "generatedAt": "25 November 2026, 12:55 (UTC)",
+  "totalCertificates": 110,
+  "totalValid": 109,
   "totalRevoked": 1,
-  "totalActivities": 3,
+  "totalActivities": 4,
   "byYear": {
-    "2026": 96
+    "2026": 110
   },
   "byType": {
+    "Training course": 14,
     "Webinar": 68,
     "Workshop": 28
   },
   "activities": [
+    {
+      "title": "Research Mentorship Program of the Supporting Preparedness for Article 6 Cooperation (SPAR6C) Program",
+      "type": "Training course",
+      "activityDate": "2025",
+      "total": 14,
+      "valid": 14,
+      "revoked": 0
+    },
     {
       "title": "From Energy Audits to Action: Advancing Energy Efficiency in Buildings in Mauritius",
       "type": "Webinar",
